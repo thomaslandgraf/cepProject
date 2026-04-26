@@ -19,8 +19,28 @@ public class CustomerService {
         return repository.findAll();
     }
 
-    public Customer findById(Long id){
+    public Customer findById(Long id) {
         Optional<Customer> obj = repository.findById(id);
         return obj.get();
+    }
+
+    public Customer insert(Customer obj) {
+        return repository.save(obj);
+    }
+
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
+
+    public Customer update(Long id, Customer obj) {
+        Customer entity = repository.getReferenceById(id);
+        updateData(entity, obj);
+        return repository.save(entity);
+    }
+
+    private void updateData(Customer entity, Customer obj) {
+        entity.setName(obj.getName());
+        entity.setEmail(obj.getEmail());
+        entity.setDocument(obj.getDocument());
     }
 }

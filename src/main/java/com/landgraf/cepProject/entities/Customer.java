@@ -22,7 +22,7 @@ public class Customer implements Serializable {
     private String email;
     private String document;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Address> address = new HashSet<>();
 
     public Customer(){
@@ -71,6 +71,10 @@ public class Customer implements Serializable {
         this.address = address;
     }
 
+    public void addAddress(Address address) {
+        this.address.add(address);
+        address.setCustomer(this);
+    }
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Customer customer)) return false;

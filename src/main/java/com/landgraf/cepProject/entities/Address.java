@@ -125,11 +125,11 @@ public class Address implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Address address)) return false;
-        return Objects.equals(id, address.id);
+        return Objects.equals(id, address.id) && Objects.equals(cep, address.cep) && Objects.equals(street, address.street) && Objects.equals(number, address.number) && Objects.equals(complement, address.complement) && Objects.equals(neighborhood, address.neighborhood) && Objects.equals(city, address.city) && Objects.equals(state, address.state) && Objects.equals(ibge, address.ibge) && Objects.equals(customer, address.customer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hash(id, cep, street, number, complement, neighborhood, city, state, ibge, customer);
     }
 }
