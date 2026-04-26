@@ -22,4 +22,29 @@ public class AddressService {
         Optional<Address> obj = repository.findById(id);
         return obj.get();
     }
+    
+    public Address insert(Address obj) {
+        return repository.save(obj);
+    }
+    
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
+    
+    public Address update(Long id, Address obj) {
+        Address entity = repository.getReferenceById(id);
+        updateData(entity, obj);
+        return repository.save(entity);
+    }
+
+    private void updateData(Address entity, Address obj) {
+        entity.setCep(obj.getCep());
+        entity.setCity(obj.getCity());
+        entity.setComplement(obj.getComplement());
+        entity.setNeighborhood(obj.getNeighborhood());
+        entity.setNumber(obj.getNumber());
+        entity.setState(obj.getState());
+        entity.setStreet(obj.getStreet());
+        entity.setIbge(obj.getIbge());
+    }
 }

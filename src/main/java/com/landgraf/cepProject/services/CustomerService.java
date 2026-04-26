@@ -24,6 +24,11 @@ public class CustomerService {
         return obj.get();
     }
 
+    public Customer findByDocument(String document) {
+        Optional<Customer> obj = repository.findByDocument(document);
+        return obj.get();
+    }
+
     public Customer insert(Customer obj) {
         return repository.save(obj);
     }

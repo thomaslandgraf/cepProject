@@ -29,6 +29,12 @@ public class CustomerController{
         return ResponseEntity.ok().body(obj);
     }
 
+    @GetMapping(value = "/document/{document}")
+    public ResponseEntity<Customer> findByDocument(@PathVariable String document) {
+        Customer obj = service.findByDocument(document);
+        return ResponseEntity.ok().body(obj);
+    }
+
     @PostMapping
     public ResponseEntity<Customer> insert(@RequestBody Customer obj) {
         if(obj.getAddress() != null) {
@@ -53,4 +59,5 @@ public class CustomerController{
         obj = service.update(id, obj);
         return ResponseEntity.ok().body(obj);
     }
+
 }
