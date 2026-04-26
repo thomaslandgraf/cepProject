@@ -1,5 +1,6 @@
 package com.landgraf.cepProject.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -24,6 +25,11 @@ public class Address implements Serializable {
     private String city;
     private String state;
     private String ibge;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    @JsonIgnore
+    private Customer customer;
 
     public Address(){
     }
@@ -106,6 +112,14 @@ public class Address implements Serializable {
 
     public void setIbge(String ibge) {
         this.ibge = ibge;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     @Override

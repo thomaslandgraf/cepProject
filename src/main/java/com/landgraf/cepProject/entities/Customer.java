@@ -22,6 +22,7 @@ public class Customer implements Serializable {
     private String email;
     private String document;
 
+    @OneToMany(mappedBy = "customer")
     private Set<Address> address = new HashSet<>();
 
     public Customer(){
