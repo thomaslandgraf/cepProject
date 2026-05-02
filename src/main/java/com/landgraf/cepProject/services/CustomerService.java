@@ -3,7 +3,9 @@ package com.landgraf.cepProject.services;
 
 import com.landgraf.cepProject.entities.Customer;
 import com.landgraf.cepProject.repositories.CustomerRepository;
+import com.landgraf.cepProject.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,12 +23,12 @@ public class CustomerService {
 
     public Customer findById(Long id) {
         Optional<Customer> obj = repository.findById(id);
-        return obj.get();
+        return obj.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public Customer findByDocument(String document) {
         Optional<Customer> obj = repository.findByDocument(document);
-        return obj.get();
+        return obj.orElseThrow(() -> new ResourceNotFoundException(document));
     }
 
     public Customer insert(Customer obj) {
@@ -34,7 +36,7 @@ public class CustomerService {
     }
 
     public void delete(Long id) {
-        repository.deleteById(id);
+            repository.deleteById(id);
     }
 
     public Customer update(Long id, Customer obj) {
