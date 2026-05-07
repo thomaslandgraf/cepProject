@@ -1,12 +1,18 @@
 package com.landgraf.cepProject.services;
 
 
+import com.landgraf.cepProject.dto.AddressDTO;
+import com.landgraf.cepProject.dto.CustomerDTO;
+import com.landgraf.cepProject.entities.Address;
 import com.landgraf.cepProject.entities.Customer;
 import com.landgraf.cepProject.repositories.CustomerRepository;
 import com.landgraf.cepProject.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +22,13 @@ public class CustomerService {
 
     @Autowired
     private CustomerRepository repository;
+
+    private final RestClient restClient;
+
+    public CustomerService(RestClient.Builder builder, CustomerRepository repository) {
+        this.restClient = builder.baseUrl("https://viacep.com.br/ws/").build();
+        this.repository = repository;
+    }
 
     public List<Customer> findAll(){
         return repository.findAll();
@@ -31,12 +44,43 @@ public class CustomerService {
         return obj.orElseThrow(() -> new ResourceNotFoundException(document));
     }
 
-    public Customer insert(Customer obj) {
-        return repository.save(obj);
+    public Customer insert(CustomerDTO dto) {
+
+        if (repository.existsByDocument(dto.getDocument())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Document already exists.");
+        }
+
+        AddressDTO addressDTO = restClient.get()
+                .uri("/{cep}/json/", dto.getCep())
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
+                    throw new ResourceNotFoundException("CEP not found or invalid.");
+                })
+                .body(AddressDTO.class);
+
+
+
+        Customer customer = new Customer();
+        customer.setName(dto.getName());
+        customer.setEmail(dto.getEmail());
+        customer.setDocument(dto.getDocument());
+
+        Address address = new Address();
+        address.setCep(dto.getCep());
+        address.setStreet(addressDTO.getLogradouro());
+        address.setNeighborhood(addressDTO.getBairro());
+        address.setCity(addressDTO.getLocalidade());
+        address.setState(addressDTO.getUf());
+
+        address.setCustomer(customer);
+        customer.getAddress().add(address);
+
+        return repository.save(customer);
     }
 
     public void delete(Long id) {
-            repository.deleteById(id);
+
+        repository.deleteById(id);
     }
 
     public Customer update(Long id, Customer obj) {

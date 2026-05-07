@@ -1,7 +1,9 @@
 package com.landgraf.cepProject.controllers;
 
+import com.landgraf.cepProject.dto.CustomerDTO;
 import com.landgraf.cepProject.entities.Customer;
 import com.landgraf.cepProject.services.CustomerService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,15 +38,13 @@ public class CustomerController{
     }
 
     @PostMapping
-    public ResponseEntity<Customer> insert(@RequestBody Customer obj) {
-        if(obj.getAddress() != null) {
-            Customer finalObj = obj;
-            obj.getAddress().forEach(address -> address.setCustomer(finalObj));
-        }
+    public ResponseEntity<Customer> insert(@Valid @RequestBody CustomerDTO dto) {
 
-        obj = service.insert(obj);
+        Customer obj = service.insert(dto);
+
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(obj.getId()).toUri();
+
         return ResponseEntity.created(uri).body(obj);
     }
 

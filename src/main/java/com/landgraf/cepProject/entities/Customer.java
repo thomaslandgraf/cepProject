@@ -20,6 +20,8 @@ public class Customer implements Serializable {
 
     private String name;
     private String email;
+
+    @Column(unique = true, nullable = false)
     private String document;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
