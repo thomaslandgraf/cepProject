@@ -71,6 +71,8 @@ public class CustomerService {
         address.setNeighborhood(addressDTO.getBairro());
         address.setCity(addressDTO.getLocalidade());
         address.setState(addressDTO.getUf());
+        address.setNumber(dto.getNumber());
+        address.setComplement(dto.getComplement());
 
         address.setCustomer(customer);
         customer.getAddress().add(address);
