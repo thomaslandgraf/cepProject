@@ -50,6 +50,12 @@ public class CustomerService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Document already exists.");
         }
 
+        String cleanCep = dto.getCep().replaceAll("\\D", "");
+
+        if (cleanCep.length() != 8) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid CEP format.");
+        }
+
         AddressDTO addressDTO = restClient.get()
                 .uri("/{cep}/json/", dto.getCep())
                 .retrieve()
@@ -57,8 +63,6 @@ public class CustomerService {
                     throw new ResourceNotFoundException("CEP not found or invalid.");
                 })
                 .body(AddressDTO.class);
-
-
 
         Customer customer = new Customer();
         customer.setName(dto.getName());
@@ -81,7 +85,6 @@ public class CustomerService {
     }
 
     public void delete(Long id) {
-
         repository.deleteById(id);
     }
 
