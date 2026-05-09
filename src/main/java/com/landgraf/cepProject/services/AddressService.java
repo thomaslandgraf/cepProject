@@ -12,7 +12,7 @@ import java.util.Optional;
 @Service
 public class AddressService {
 
-    @Autowired
+    @Autowired //TODO SUBSTITUIR POR INJEÇÃO DE DEPENDENCIA VIA CONSTRUTOR, UTILIZE LOMBOK PARA CRIAR CONSTRUTORES E DEIXAR CÓDIGO MENOS VERBOSO
     private AddressRepository repository;
 
     public List<Address> findAll() {

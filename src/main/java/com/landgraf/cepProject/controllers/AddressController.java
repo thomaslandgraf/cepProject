@@ -2,7 +2,8 @@ package com.landgraf.cepProject.controllers;
 
 import com.landgraf.cepProject.entities.Address;
 import com.landgraf.cepProject.services.AddressService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -11,22 +12,35 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(value = "/addresses")
 public class AddressController {
 
-    @Autowired
-    private AddressService service;
+    //TODO SIGA ESSE EXEMPLO DE INJEÇÃO PARA TODAS AS INJEÇÕES DO PROJETO
+    private final AddressService service;
 
+    //TODO SIGA ESSE EXEMPLO PARA OS DEMAIS
     @GetMapping
-    public ResponseEntity<List<Address>> findAll() {
-        List<Address> obj = service.findAll();
-        return ResponseEntity.ok().body(obj);
+    @ResponseStatus(HttpStatus.OK)
+    public List<Address> findAll() {
+        return service.findAll();
     }
-
+    
     @GetMapping(value = "/{id}")
+    //TODO verificar possibilidades de melhoria de resposta em caso de type mistmatch na chamada, ao invez de um simples bad request. Acrediot que você terá que colocar o atributo dentro de um objeto e utilizar o @Validate + Constraints
     public ResponseEntity<Address> findById(@PathVariable Long id) {
         Address obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
+    }
+
+    //TODO CRIAR NOVO FIND QUE DEVE DAR A POSSIBILIDADE DE FILTROS POR QUERY_PARAM, ESSES FILTROS DEVEM SER, CEP, NOME DO CUSTOMER, EMAIL E DOCUMENT
+    //FAZER ALGO SIMILAR PARA O CUSTOMER
+    
+    
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping
@@ -35,12 +49,6 @@ public class AddressController {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").
                 buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).body(obj);
-    }
-
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
-        service.delete(id);
-        return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "/{id}")

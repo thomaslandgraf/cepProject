@@ -2,6 +2,7 @@ package com.landgraf.cepProject.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.Constraint;
 
 import java.io.Serial;
 import java.io.Serializable;

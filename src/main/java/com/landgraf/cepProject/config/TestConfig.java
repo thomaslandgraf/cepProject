@@ -18,10 +18,10 @@ import java.util.Set;
 @Profile("test")
 public class TestConfig implements CommandLineRunner {
 
-    @Autowired
+    @Autowired //TODO SUBSTITUIR POR INJEÇÃO DE DEPENDENCIA VIA CONSTRUTOR, UTILIZE LOMBOK PARA CRIAR CONSTRUTORES E DEIXAR CÓDIGO MENOS VERBOSO
     private CustomerRepository customerRepository;
 
-    @Autowired
+    @Autowired //TODO SUBSTITUIR POR INJEÇÃO DE DEPENDENCIA VIA CONSTRUTOR, UTILIZE LOMBOK PARA CRIAR CONSTRUTORES E DEIXAR CÓDIGO MENOS VERBOSO
     private AddressRepository addressRepository;
 
     @Override

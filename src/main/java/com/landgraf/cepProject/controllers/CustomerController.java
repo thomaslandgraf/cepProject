@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping(value = "/customers")
 public class CustomerController{
 
-    @Autowired
+    @Autowired //TODO SUBSTITUIR POR INJEÇÃO DE DEPENDENCIA VIA CONSTRUTOR, UTILIZE LOMBOK PARA CRIAR CONSTRUTORES E DEIXAR CÓDIGO MENOS VERBOSO
     private CustomerService service;
 
     @GetMapping

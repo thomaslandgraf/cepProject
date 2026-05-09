@@ -20,7 +20,7 @@ import java.util.Optional;
 @Service
 public class CustomerService {
 
-    @Autowired
+    @Autowired //TODO SUBSTITUIR POR INJEÇÃO DE DEPENDENCIA VIA CONSTRUTOR, UTILIZE LOMBOK PARA CRIAR CONSTRUTORES E DEIXAR CÓDIGO MENOS VERBOSO
     private CustomerRepository repository;
 
     private final RestClient restClient;
@@ -56,6 +56,16 @@ public class CustomerService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid CEP format.");
         }
 
+        
+        //TODO na inserção de novos endereços adicionar o novo atributo integration_type que pode valer rest ou feign esse atributo será um QUERY_PARAM
+        //INTEGRATION_TYPE não pode ser de preenchimento obrigatório, caso esteja vazio ou nullo será utilizada a integração FEIGN
+        //Novo service de integração com via cep
+        //RECEBE String CEP, IntegrationType = REST / FEIGN
+        //IntegrationType  = Rest usa RESTCLIENT;
+        //IntegrationType = FEIGN usa FEIGNCLIENT;
+        //RETORNA AddressResponse
+        
+        
         AddressDTO addressDTO = restClient.get()
                 .uri("/{cep}/json/", dto.getCep())
                 .retrieve()
