@@ -26,20 +26,32 @@ public class TestConfig implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Customer customer1 = new Customer(null, "Thomas", "thomas@gmail.com", "45124454");
-        Customer customer2 = new Customer(null, "Maria", "maria@gmail.com", "447412356488");
-
-        Address address1 = new Address(null, "94455", "Avenida Brasil", "114", "Ao lado da churrascaria", "Centro", "Rio de Janeiro", "Rio de Janeiro", "555214");
-        Address address2 = new Address(null, "77465", "Felix", "554", "APT 3332", "Centro", "Sao Paulo", "Sao Paulo", "11147");
-
-
-        address1.setCustomer(customer1);
-        address2.setCustomer(customer2);
-        customer1.getAddress().add(address1);
-        customer2.getAddress().add(address2);
-
-        customerRepository.saveAll(Arrays.asList(customer1, customer2));
-        addressRepository.saveAll(Arrays.asList(address1, address2));
+//        //Customer customer1 = new Customer(null, "Thomas", "thomas@gmail.com", "45124454");
+//       // Customer customer2 = new Customer(null, "Maria", "maria@gmail.com", "447412356488");
+//
+//        Customer customer1 = new Customer();
+//        customer1.setId(null);
+//        customer1.setName("Thomas");
+//        customer1.setEmail("Thomas@gmail.com");
+//        customer1.setDocument("456432485");
+//
+//        Customer customer2 = new Customer();
+//        customer2.setId(null);
+//        customer2.setName("Jose");
+//        customer2.setEmail("jose@gmail.com");
+//        customer2.setDocument("4565555555555555");
+//
+//        Address address1 = new Address(null, "94455", "Avenida Brasil", "114", "Ao lado da churrascaria", "Centro", "Rio de Janeiro", "Rio de Janeiro", "555214");
+//        Address address2 = new Address(null, "77465", "Felix", "554", "APT 3332", "Centro", "Sao Paulo", "Sao Paulo", "11147");
+//
+//
+//        address1.setCustomer(customer1);
+//        address2.setCustomer(customer2);
+//        customer1.getAddress().add(address1);
+//        customer2.getAddress().add(address2);
+//
+//        customerRepository.saveAll(Arrays.asList(customer1, customer2));
+//        addressRepository.saveAll(Arrays.asList(address1, address2));
 
     }
 }

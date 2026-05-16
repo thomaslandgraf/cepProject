@@ -1,15 +1,19 @@
 package com.landgraf.cepProject.entities;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "customer")
+@Getter
+@Setter
+@ToString(exclude = "address")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Customer implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -27,64 +31,9 @@ public class Customer implements Serializable {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Address> address = new HashSet<>();
 
-    public Customer(){
-    }
-
-    public Customer(Long id, String name, String email, String document) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.document = document;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getDocument() {
-        return document;
-    }
-
-    public void setDocument(String document) {
-        this.document = document;
-    }
-
-    public Set<Address> getAddress() {
-        return address;
-    }
-
-    public void setAddress(Set<Address> address) {
-        this.address = address;
-    }
-
-    public void addAddress(Address address) {
+      public void addAddress(Address address) {
         this.address.add(address);
         address.setCustomer(this);
     }
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Customer customer)) return false;
-        return Objects.equals(id, customer.id);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
 }

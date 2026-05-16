@@ -2,6 +2,7 @@ package com.landgraf.cepProject.controllers;
 
 import com.landgraf.cepProject.entities.Address;
 import com.landgraf.cepProject.services.AddressService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +15,11 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/addresses")
+@Tag(name = "Address", description = "Register addresses.")
 public class AddressController {
 
-    //TODO SIGA ESSE EXEMPLO DE INJEÇÃO PARA TODAS AS INJEÇÕES DO PROJETO
     private final AddressService service;
 
-    //TODO SIGA ESSE EXEMPLO PARA OS DEMAIS
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<Address> findAll() {

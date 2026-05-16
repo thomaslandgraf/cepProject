@@ -3,8 +3,11 @@ package com.landgraf.cepProject.controllers;
 import com.landgraf.cepProject.dto.CustomerDTO;
 import com.landgraf.cepProject.entities.Customer;
 import com.landgraf.cepProject.services.CustomerService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -14,10 +17,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/customers")
+@RequiredArgsConstructor
+@Tag(name = "Customer", description = "Register customers.")
 public class CustomerController{
 
-    @Autowired //TODO SUBSTITUIR POR INJEÇÃO DE DEPENDENCIA VIA CONSTRUTOR, UTILIZE LOMBOK PARA CRIAR CONSTRUTORES E DEIXAR CÓDIGO MENOS VERBOSO
-    private CustomerService service;
+    private final CustomerService service;
 
     @GetMapping
     public ResponseEntity<List<Customer>> findAll(){
@@ -38,6 +42,7 @@ public class CustomerController{
     }
 
     @PostMapping
+    @Operation(summary = "Register customer", description = "Add a new customer in the database.")
     public ResponseEntity<Customer> insert(@Valid @RequestBody CustomerDTO dto) {
 
         Customer obj = service.insert(dto);
@@ -54,6 +59,7 @@ public class CustomerController{
         return ResponseEntity.noContent().build();
     }
 
+    //Erro ao buscar id invalido.
     @PutMapping(value = "/{id}")
     public ResponseEntity<Customer> update(@PathVariable Long id, @RequestBody Customer obj) {
         obj = service.update(id, obj);

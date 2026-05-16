@@ -7,6 +7,7 @@ import com.landgraf.cepProject.entities.Address;
 import com.landgraf.cepProject.entities.Customer;
 import com.landgraf.cepProject.repositories.CustomerRepository;
 import com.landgraf.cepProject.services.exceptions.ResourceNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -20,7 +21,8 @@ import java.util.Optional;
 @Service
 public class CustomerService {
 
-    @Autowired //TODO SUBSTITUIR POR INJEÇÃO DE DEPENDENCIA VIA CONSTRUTOR, UTILIZE LOMBOK PARA CRIAR CONSTRUTORES E DEIXAR CÓDIGO MENOS VERBOSO
+    //TODO
+    @Autowired
     private CustomerRepository repository;
 
     private final RestClient restClient;
