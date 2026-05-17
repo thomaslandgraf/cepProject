@@ -94,15 +94,19 @@ public class CustomerService {
         repository.deleteById(id);
     }
 
-    public Customer update(Long id, Customer obj) {
+    public Customer update(Long id, CustomerDTO obj) {
         Customer entity = repository.getReferenceById(id);
         updateData(entity, obj);
         return repository.save(entity);
     }
 
-    private void updateData(Customer entity, Customer obj) {
+    private void updateData(Customer entity, CustomerDTO obj) {
         entity.setName(obj.getName());
         entity.setEmail(obj.getEmail());
         entity.setDocument(obj.getDocument());
+    }
+
+    public List<Customer> findByFilters(String cep, String name, String email, String document) {
+        return repository.findByFilters(cep, name, email, document);
     }
 }

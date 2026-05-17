@@ -61,9 +61,9 @@ public class AddressController {
 
     @PostMapping
     @Operation(summary = "Create address.", description = "Register a new address in the database.")
-    public ResponseEntity<Address> insert(@RequestBody AddressDTO obj) {
+    public ResponseEntity<Address> insert(@RequestBody AddressDTO dto) {
 
-        Address address = service.insert(obj);
+        Address address = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").
                 buildAndExpand(address.getId()).toUri();
         return ResponseEntity.created(uri).body(address);
@@ -71,9 +71,9 @@ public class AddressController {
 
     @PutMapping(value = "/{id}")
     @Operation(summary = "Update address by ID.", description = "Update address information in the database.")
-    public ResponseEntity<Address> update(@PathVariable Long id, @RequestBody AddressDTO obj) {
+    public ResponseEntity<Address> update(@PathVariable Long id, @RequestBody AddressDTO dto) {
 
-        Address address = service.update(id, obj);
+        Address address = service.update(id, dto);
         return ResponseEntity.ok().body(address);
     }
 }
