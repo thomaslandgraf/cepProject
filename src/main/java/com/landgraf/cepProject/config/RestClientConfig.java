@@ -5,11 +5,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestClient;
 
 @Configuration
-public class CustomerConfig {
+public class RestClientConfig {
 
-    @Bean
-    public RestClient.Builder restClientBuilder() {
-
-        return RestClient.builder();
-    }
+        @Bean
+        public RestClient viaCepRestClient(RestClient.Builder builder) {
+            return builder.baseUrl("https://viacep.com.br/ws/").build();
+        }
 }
+

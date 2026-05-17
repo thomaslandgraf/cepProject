@@ -8,7 +8,6 @@ import com.landgraf.cepProject.entities.Customer;
 import com.landgraf.cepProject.repositories.CustomerRepository;
 import com.landgraf.cepProject.services.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
@@ -19,18 +18,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CustomerService {
 
     //TODO
-    @Autowired
-    private CustomerRepository repository;
+    private final CustomerRepository repository;
 
     private final RestClient restClient;
-
-    public CustomerService(RestClient.Builder builder, CustomerRepository repository) {
-        this.restClient = builder.baseUrl("https://viacep.com.br/ws/").build();
-        this.repository = repository;
-    }
 
     public List<Customer> findAll(){
         return repository.findAll();
