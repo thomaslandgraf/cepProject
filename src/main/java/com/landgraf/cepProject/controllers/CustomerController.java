@@ -1,8 +1,8 @@
 package com.landgraf.cepProject.controllers;
 
 import com.landgraf.cepProject.dto.CustomerDTO;
-import com.landgraf.cepProject.entities.Address;
 import com.landgraf.cepProject.entities.Customer;
+import com.landgraf.cepProject.entities.enums.IntegrationType;
 import com.landgraf.cepProject.services.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -58,9 +58,11 @@ public class CustomerController{
 
     @PostMapping
     @Operation(summary = "Register customer", description = "Add a new customer in the database.")
-    public ResponseEntity<Customer> insert(@Valid @RequestBody CustomerDTO dto) {
+    public ResponseEntity<Customer> insert(@Valid @RequestBody CustomerDTO dto,
+                                           @RequestParam(required = false) IntegrationType integrationType) {
 
-        Customer obj = service.insert(dto);
+
+        Customer obj = service.insert(dto, integrationType);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(obj.getId()).toUri();
@@ -75,7 +77,6 @@ public class CustomerController{
         return ResponseEntity.noContent().build();
     }
 
-    //Erro ao buscar id invalido.
     @PutMapping(value = "/{id}")
     @Operation(summary = "Update a customer.", description = "Update customer's information from database")
     public ResponseEntity<Customer> update(@PathVariable Long id, @RequestBody CustomerDTO dto) {

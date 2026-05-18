@@ -5,14 +5,15 @@ import com.landgraf.cepProject.dto.AddressDTO;
 import com.landgraf.cepProject.dto.CustomerDTO;
 import com.landgraf.cepProject.entities.Address;
 import com.landgraf.cepProject.entities.Customer;
+import com.landgraf.cepProject.entities.enums.IntegrationType;
 import com.landgraf.cepProject.repositories.CustomerRepository;
+import com.landgraf.cepProject.services.exceptions.BusinessException;
 import com.landgraf.cepProject.services.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import org.springframework.web.server.ResponseStatusException;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +25,7 @@ public class CustomerService {
     //TODO
     private final CustomerRepository repository;
 
-    private final RestClient restClient;
+    private final ViaCepService viaCepService;
 
     public List<Customer> findAll(){
         return repository.findAll();
@@ -40,18 +41,13 @@ public class CustomerService {
         return obj.orElseThrow(() -> new ResourceNotFoundException(document));
     }
 
-    public Customer insert(CustomerDTO dto) {
+    public Customer insert(CustomerDTO dto, IntegrationType integrationType) {
 
         if (repository.existsByDocument(dto.getDocument())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Document already exists.");
+            throw new BusinessException("Document already exist.");
         }
 
         String cleanCep = dto.getCep().replaceAll("\\D", "");
-
-        if (cleanCep.length() != 8) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid CEP format.");
-        }
-
         
         //TODO na inserção de novos endereços adicionar o novo atributo integration_type que pode valer rest ou feign esse atributo será um QUERY_PARAM
         //INTEGRATION_TYPE não pode ser de preenchimento obrigatório, caso esteja vazio ou nullo será utilizada a integração FEIGN
@@ -62,13 +58,15 @@ public class CustomerService {
         //RETORNA AddressResponse
         
         
-        AddressDTO addressDTO = restClient.get()
-                .uri("/{cep}/json/", dto.getCep())
-                .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
-                    throw new ResourceNotFoundException("CEP not found or invalid.");
-                })
-                .body(AddressDTO.class);
+//        AddressDTO addressDTO = restClient.get()
+//                .uri("/{cep}/json/", dto.getCep())
+//                .retrieve()
+//                .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
+//                    throw new ResourceNotFoundException("CEP not found or invalid.");
+//                })
+//                .body(AddressDTO.class);
+
+        AddressDTO addressDTO = viaCepService.findCep(cleanCep, integrationType);
 
         Customer customer = new Customer();
         customer.setName(dto.getName());
